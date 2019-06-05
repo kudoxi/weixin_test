@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect,HttpResponse,HttpResponseRedirect
-from WeixinTest.settings import *
+from weixin_test.settings import *
 from urllib import parse,request
 import json
 import os,sys,io
