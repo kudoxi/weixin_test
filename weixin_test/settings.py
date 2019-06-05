@@ -25,7 +25,7 @@ SECRET_KEY = 'r18&b)8*(cgn!s)l$3qa!0@pq_-6yj)x(4vudm78k-=x$=tbs8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -120,6 +120,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 #微信公众号
 APPID = 'wx53304857b300c82a'
