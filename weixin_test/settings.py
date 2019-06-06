@@ -162,7 +162,7 @@ LOGGING = {
     },
     'handlers':{
         'console':{ # 在终端打印
-            'level':'DEBUG',
+            'level':'ERROR',
             'filters': ['require_debug_true'],  # 只有在Django debug为True时才在屏幕打印日志
             'class': 'logging.StreamHandler',  #
             'formatter': 'simple'

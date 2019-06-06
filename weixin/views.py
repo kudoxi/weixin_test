@@ -4,7 +4,6 @@ from utils.WeixinAuth import Weixin
 from mydecoration.weixinAuth import *
 import logging
 # Create your views here.
-'''
 @weixin_auth
 def index(req):
     wx = Weixin()
@@ -12,7 +11,6 @@ def index(req):
     print('access_token',access_token)
     return HttpResponse(8888)
     #return HttpResponse('access_token:{}'.format(access_token))
-'''
 
 def access_token(req):
     logger = logging.getLogger('django')
