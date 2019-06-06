@@ -15,5 +15,4 @@ def index(req):
 
 def access_token(req):
 
-
     return HttpResponse(2222)
