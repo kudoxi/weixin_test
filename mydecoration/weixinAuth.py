@@ -29,7 +29,8 @@ def weixin_auth(func):
                 res = requests.get(curl)
                 res2 = res.text
                 urlResp = json.loads(res2)
-                logger.info("--------------get urlResp:"+urlResp)
+                logger.info("--------------get urlResp:")
+                logger.info(urlResp)
             #urlResp = request.urlopen(url)
             #urlResp_text = urlResp.read().decode('gbk')
             #print('urlResp_text:',urlResp_text)
