@@ -14,7 +14,18 @@ def weixin_auth(func):
         userid = req.session.get('userid')
         if not userid:
             logger = logging.getLogger('django')
-            access_token ,openid = get_access_token(req)
+            urlResp = get_access_token(req)
+            refresh_token = urlResp['refresh_token']
+            access_token = urlResp['access_token']
+            expires_in = urlResp['expires_in']
+            openid = urlResp['openid']
+            now = time()
+            expires_in = now + expires_in
+            refresh_token_expires_in = now + 60 * 60 * 24 * 30
+            req.session['access_token_expires_in'] = expires_in
+            req.session['access_token'] = access_token
+            req.session['refresh_token_expires_in'] = refresh_token_expires_in
+            req.session['refresh_token'] = refresh_token
             # redirect_url = ROOT_URL+"/weixin_test"+req.get_full_path()
             # redirect_uri = 'https://xscenic.qiweiwangguo.com/cas_api/v1/wechat/auth'
             # url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid={}&redirect_uri={}&response_type=code&scope={}&state=123#wechat_redirect'\
@@ -69,8 +80,8 @@ def weixin_auth(func):
 
 def get_access_token(req):
     logger = logging.getLogger('django')
+    #1.获取code
     redirect_url = ROOT_URL + "/weixin_test" + req.get_full_path()
-    redirect_uri = 'https://xscenic.qiweiwangguo.com/cas_api/v1/wechat/auth'
     url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid={}&redirect_uri={}&response_type=code&scope={}&state=123#wechat_redirect' \
         .format(APPID, redirect_url, SCOPE)
     logger.info('-------------------------url:' + url)
@@ -79,7 +90,7 @@ def get_access_token(req):
         return HttpResponseRedirect(url)
     else:
         logger.info("---------------get code:" + code)
-        # 3.通过code换取网页授权access_token
+        # 2.通过code换取网页授权access_token
         curl = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid={}&secret={}&code={}&grant_type=authorization_code' \
             .format(APPID, APPSECRET, code)
         res = requests.get(curl)
@@ -87,17 +98,7 @@ def get_access_token(req):
         urlResp = json.loads(res2)
         logger.info("--------------get urlResp:")
         logger.info(urlResp)
-        refresh_token = urlResp['refresh_token']
-        access_token = urlResp['access_token']
-        expires_in = urlResp['expires_in']
-        openid = urlResp['openid']
-        now = time()
-        expires_in = now + expires_in
-        refresh_token_expires_in = now + 60 * 60 * 24 * 30
-        req.session['access_token_expires_in'] = expires_in
-        req.session['access_token'] = access_token
-        req.session['refresh_token_expires_in'] = refresh_token_expires_in
-        req.session['refresh_token'] = refresh_token
-        return access_token,openid
+
+        return urlResp
 
 
