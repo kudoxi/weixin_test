@@ -45,10 +45,51 @@ def answer(req):
         return HttpResponse("")
 
 
+'''
+    获取 code
+'''
+def code(req):
+    logger = logging.getLogger('django')
+    wx = Weixin()
+    redirect_url = ROOT_URL + "/weixin_test" + req.get_full_path()
+    url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid={}&redirect_uri={}&response_type=code&scope={}&state=123#wechat_redirect' \
+        .format(APPID, redirect_url, SCOPE)
+    logger.info('-------------------------url:' + url)
+    code = req.GET.get("code", '')
+    if not code:
+        return HttpResponseRedirect(url)
+    else:
+        logger.info('-------------------------code:')
+        logger.info(code)
+        params = {
+            "meta": {
+                "code": 200,
+                "message": "OK"
+            },
+            "data": {
+                "code": code,
+            }
+        }
+    return HttpResponse(json.dumps(params), content_type='application/json')
 
 
 def access_token(req):
     logger = logging.getLogger('django')
-    logger.info('-------------------------test')
-    return HttpResponse(2222)
+    code = req.GET.get('code','')
+    if not code:
+        params = {
+            "meta": {
+                "code": 400,
+                "message": "no code"
+            }
+        }
+        return HttpResponse(json.dumps(params), content_type='application/json')
+    wx = Weixin()
+    urlResp = wx.get_access_token_info(req,code)
+    logger.info("--------------get urlResp:")
+    logger.info(urlResp)
+    params = urlResp
+    return HttpResponse(json.dumps(params), content_type='application/json')
+
+
 
