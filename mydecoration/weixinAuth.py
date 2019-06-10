@@ -5,6 +5,7 @@ import json
 import os,sys,io
 import requests
 import logging
+from time import time
 '''
 微信鉴权
 '''
@@ -31,10 +32,35 @@ def weixin_auth(func):
                 urlResp = json.loads(res2)
                 logger.info("--------------get urlResp:")
                 logger.info(urlResp)
-            #urlResp = request.urlopen(url)
-            #urlResp_text = urlResp.read().decode('gbk')
-            #print('urlResp_text:',urlResp_text)
-            #urlResp = json.loads(urlResp_text)
+                refresh_token = urlResp['refresh_token']
+                access_token = urlResp['access_token']
+                expires_in = urlResp['expires_in']
+                openid = urlResp['openid']
+                now = time()
+                expires_in = now + expires_in
+                refresh_token_expires_in = now + 60 * 60 * 24 * 30
+                req.session.set('access_token_expires_in',expires_in)
+                req.session.set('access_token',access_token)
+                req.session.set('refresh_token_expires_in',refresh_token_expires_in)
+                req.session.set('refresh_token',refresh_token)
+                #获取用户信息
+                userinfo_url = 'https://api.weixin.qq.com/sns/userinfo?access_token={}&openid={}&lang=zh_CN'\
+                    .format(access_token,openid)
+                userres = requests.get(userinfo_url)
+                userres2 = userres.text
+                userResp = json.loads(userres2)
+                logger.info("--------------get userResp:")
+                logger.info(userResp)
+        else:
+            pass
+            # #超过刷新时间就要重新请求
+            # if now < refresh_token_expires_in:
+            #     pass
+            # else:
+            #     #短暂超时，用refresh_token获取新access_token
+            #     if now < expires_in:
+            #         pass
+
 
 
         return  func(req,*args, **kwargs)
