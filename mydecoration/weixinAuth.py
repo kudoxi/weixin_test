@@ -18,7 +18,7 @@ def weixin_auth(func):
             url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid={}&redirect_uri={}&response_type=code&scope={}&state=123#wechat_redirect'\
                 .format(APPID,redirect_url,SCOPE)
             logger.info('-------------------------url:'+url)
-            code = req.get("code")
+            code = req.GET.get("code")
             if not code:
                 return HttpResponseRedirect(url)
             else:

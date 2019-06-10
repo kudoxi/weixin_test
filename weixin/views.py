@@ -20,11 +20,10 @@ def index(req):
 
 #回复微信应答
 def answer(req):
-    logging.info("--------req:"+req.get)
-    signature = req.get("signature")
-    timestamp = req.get("timestamp")
-    nonce = req.get("nonce")
-    echostr = req.get("echostr")
+    signature = req.GET.get("signature")
+    timestamp = req.GET.get("timestamp")
+    nonce = req.GET.get("nonce")
+    echostr = req.GET.get("echostr")
     token = TOKEN
     words = [token,timestamp,nonce]
     words.sort()
