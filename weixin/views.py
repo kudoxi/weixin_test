@@ -29,15 +29,15 @@ def answer(req):
     token = TOKEN
     words = [token,timestamp,nonce]
     words.sort()
-    logging.info("--------words:"+words)
+    logging.info(words)
     sha1 = hashlib.sha1()
     map(sha1.update, words)
     hashcode = sha1.hexdigest()
     print("handle/GET func: hashcode, signature: ", hashcode, signature)
     if hashcode == signature:
-        return echostr
+        return HttpResponse(echostr)
     else:
-        return ""
+        return HttpResponse("")
 
 
 
