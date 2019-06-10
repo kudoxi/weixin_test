@@ -38,7 +38,7 @@ def answer(req):
     if hashcode == signature:
         return HttpResponse(echostr)
     else:
-        return HttpResponse("no data")
+        return HttpResponse("")
 
 
 
