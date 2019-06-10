@@ -123,8 +123,8 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 #微信公众号
-APPID = 'wx53304857b300c82a'#'wx57f030313a9ad6c0'#'wxcd1555085d7d6f11'#
-APPSECRET = '7202904ac5bad3e0fe597b5b3c309733'#'690befa4723fa2389190c0db980fbb3f'#'92ecb8f2a26d658e515b928faf5d294a'#
+APPID = 'wxcd1555085d7d6f11'#'wx53304857b300c82a'#'wx57f030313a9ad6c0'#
+APPSECRET = '92ecb8f2a26d658e515b928faf5d294a'#'7202904ac5bad3e0fe597b5b3c309733'#'690befa4723fa2389190c0db980fbb3f'#
 SCOPE = 'snsapi_login'
 TOKEN = 'wangxi'
 
