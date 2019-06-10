@@ -26,6 +26,7 @@ def answer(req):
     timestamp = req.GET.get("timestamp",'')
     nonce = req.GET.get("nonce",'')
     echostr = req.GET.get("echostr",'')
+    logging.info("-------TOKEN:"+TOKEN)
     token = TOKEN
     words = [token,timestamp,nonce]
     words.sort()
