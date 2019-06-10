@@ -15,7 +15,7 @@ def weixin_auth(func):
             redirect_url = ROOT_URL+req.get_full_path()
             url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid={}&redirect_uri={}&response_type=code&scope=snsapi_base&state=123#wechat_redirect'\
                 .format(APPID,redirect_url)
-            logger.info('-------------------------url'+url)
+            logger.info('-------------------------url:'+url)
             #return HttpResponseRedirect(url);
             #urlResp = request.urlopen(url)
             #urlResp_text = urlResp.read().decode('gbk')
