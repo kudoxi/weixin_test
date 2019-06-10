@@ -208,7 +208,7 @@ LOGGING = {
     'loggers':{
         'django': {# 默认的logger应用如下配置
             'handlers': ['default', 'console', 'error'],# 上线之后可以把'console'移除
-            'level': 'WARNING',
+            'level': 'INFO',
             'propagate': True,# 向不向更高级别的logger传递
         },
         'collect': {      # 名为 'collect'的logger还单独处理
