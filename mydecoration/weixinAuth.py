@@ -12,9 +12,10 @@ def weixin_auth(func):
         userid = req.session.get('userid')
         if not userid:
             logger = logging.getLogger('django')
-            redirect_url = ROOT_URL+req.get_full_path()
+            redirect_url = ROOT_URL+"/weixin_test"+req.get_full_path()
+            redirect_uri = 'https://xscenic.qiweiwangguo.com/cas_api/v1/wechat/auth'
             url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid={}&redirect_uri={}&response_type=code&scope=snsapi_base&state=123#wechat_redirect'\
-                .format(APPID,redirect_url)
+                .format(APPID,redirect_uri)
             logger.info('-------------------------url:'+url)
             #return HttpResponseRedirect(url);
             #urlResp = request.urlopen(url)
