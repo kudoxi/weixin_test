@@ -39,10 +39,10 @@ def weixin_auth(func):
                 now = time()
                 expires_in = now + expires_in
                 refresh_token_expires_in = now + 60 * 60 * 24 * 30
-                req.session.set('access_token_expires_in',expires_in)
-                req.session.set('access_token',access_token)
-                req.session.set('refresh_token_expires_in',refresh_token_expires_in)
-                req.session.set('refresh_token',refresh_token)
+                req.session['access_token_expires_in'] = expires_in
+                req.session['access_token'] = access_token
+                req.session['refresh_token_expires_in'] = refresh_token_expires_in
+                req.session['refresh_token'] = refresh_token
                 #获取用户信息
                 userinfo_url = 'https://api.weixin.qq.com/sns/userinfo?access_token={}&openid={}&lang=zh_CN'\
                     .format(access_token,openid)
