@@ -27,7 +27,7 @@ def answer(req):
     timestamp = req.GET.get("timestamp",'')
     nonce = req.GET.get("nonce",'')
     echostr = req.GET.get("echostr",'')
-    logging.info("-------TOKEN:"+TOKEN)
+    logger.info("-------TOKEN:"+TOKEN)
     token = TOKEN
     words = [token,timestamp,nonce]
     words.sort()
@@ -35,6 +35,7 @@ def answer(req):
     sha1 = hashlib.sha1()
     map(sha1.update, words)
     hashcode = sha1.hexdigest()
+    logger.info("-------hashcode:"+hashcode)
     print("handle/GET func: hashcode, signature: ", hashcode, signature)
     if hashcode == signature:
         return HttpResponse(echostr)
