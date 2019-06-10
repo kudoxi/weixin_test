@@ -20,8 +20,9 @@ def index(req):
 
 #回复微信应答
 def answer(req):
-    logging.info("-------req GET")
-    logging.info(req.GET)
+    logger = logging.getLogger('django')
+    logger.info("-------req GET")
+    logger.info(req.GET)
     signature = req.GET.get("signature",'')
     timestamp = req.GET.get("timestamp",'')
     nonce = req.GET.get("nonce",'')
