@@ -13,8 +13,9 @@ def weixin_auth(func):
     def wrapper(req,*args,**kwargs):
         userid = req.session.get('userid')
         if not userid:
+            redirect_url = ROOT_URL + "/weixin_test" + req.get_full_path()
             logger = logging.getLogger('django')
-            urlResp = get_access_token(req)
+            urlResp = get_access_token(req,redirect_url)
             refresh_token = urlResp['refresh_token']
             access_token = urlResp['access_token']
             expires_in = urlResp['expires_in']
@@ -78,10 +79,9 @@ def weixin_auth(func):
         return func(req,*args, **kwargs)
     return wrapper
 
-def get_access_token(req):
+def get_access_token(req,redirect_url):
     logger = logging.getLogger('django')
     #1.获取code
-    redirect_url = ROOT_URL + "/weixin_test" + req.get_full_path()
     url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid={}&redirect_uri={}&response_type=code&scope={}&state=123#wechat_redirect' \
         .format(APPID, redirect_url, SCOPE)
     logger.info('-------------------------url:' + url)
