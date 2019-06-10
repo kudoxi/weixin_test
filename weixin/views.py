@@ -94,6 +94,15 @@ def access_token(req):
 
 def userinfo(req):
     logger = logging.getLogger('django')
+    code = req.GET.get('code','')
+    if not code:
+        params = {
+            "meta": {
+                "code": 400,
+                "message": "no code"
+            }
+        }
+        return HttpResponse(json.dumps(params), content_type='application/json')
     wx = Weixin()
     urlResp = wx.get_access_token_info(req, code)
     refresh_token = urlResp['refresh_token']
