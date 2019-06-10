@@ -92,4 +92,22 @@ def access_token(req):
     return HttpResponse(json.dumps(params), content_type='application/json')
 
 
+def userinfo(req):
+    logger = logging.getLogger('django')
+    wx = Weixin()
+    urlResp = wx.get_access_token_info(req, code)
+    refresh_token = urlResp['refresh_token']
+    access_token = urlResp['access_token']
+    expires_in = urlResp['expires_in']
+    openid = urlResp['openid']
+    now = time()
+    expires_in = now + expires_in
+    refresh_token_expires_in = now + 60 * 60 * 24 * 30
+    req.session['access_token_expires_in'] = expires_in
+    req.session['access_token'] = access_token
+    req.session['refresh_token_expires_in'] = refresh_token_expires_in
+    req.session['refresh_token'] = refresh_token
 
+    userResp = wx.get_userinfo(req, access_token, openid)
+    params = userResp
+    return HttpResponse(json.dumps(params), content_type='application/json')
