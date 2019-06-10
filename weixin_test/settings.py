@@ -123,8 +123,9 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 #微信公众号
-APPID = 'wx57f030313a9ad6c0'#'wx53304857b300c82a'
-APPSECRET = '690befa4723fa2389190c0db980fbb3f'#'7202904ac5bad3e0fe597b5b3c309733'
+APPID = 'wx53304857b300c82a'#'wx57f030313a9ad6c0'#
+APPSECRET = '7202904ac5bad3e0fe597b5b3c309733'#'690befa4723fa2389190c0db980fbb3f'#
+SCOPE = 'snsapi_login'
 
 ROOT_URL = "https://xscenic.qiweiwangguo.com"
 
