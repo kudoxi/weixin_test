@@ -31,9 +31,11 @@ def answer(req):
     token = TOKEN
     words = [token,timestamp,nonce]
     words.sort()
-    logging.info(words)
+    logger.info(words)
     sha1 = hashlib.sha1()
-    map(sha1.update, words)
+    sha1.update(words[0].encode("utf-8"))
+    sha1.update(words[1].encode("utf-8"))
+    sha1.update(words[2].encode("utf-8"))
     hashcode = sha1.hexdigest()
     logger.info("-------hashcode:"+hashcode)
     print("handle/GET func: hashcode, signature: ", hashcode, signature)
