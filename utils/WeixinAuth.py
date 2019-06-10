@@ -11,7 +11,6 @@ class Weixin:
     def __init__(self):
         self.logger = logging.getLogger('django')
 
-
     '''
         网页授权 access_token 信息
         返回：{'access_token': 'xxxxx', 'refresh_token': 'xxxxxxxxxx', 'scope': 'snsapi_userinfo', 'expires_in': 7200, 'openid': 'oe1Rp6Pv6_Dp2baNz7sCTTOo5mxk'}

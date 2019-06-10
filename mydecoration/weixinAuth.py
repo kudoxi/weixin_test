@@ -11,11 +11,10 @@ from time import time
 '''
 def weixin_auth(func):
     def wrapper(req,*args,**kwargs):
-        userid = req.session.get('userid')
+        userid = req.session.get('openid')
         if not userid:
             logger = logging.getLogger('django')
             redirect_url = ROOT_URL+"/weixin_test"+req.get_full_path()
-            redirect_uri = 'https://xscenic.qiweiwangguo.com/cas_api/v1/wechat/auth'
             url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid={}&redirect_uri={}&response_type=code&scope={}&state=123#wechat_redirect'\
                 .format(APPID,redirect_url,SCOPE)
             logger.info('-------------------------url:'+url)
@@ -51,6 +50,7 @@ def weixin_auth(func):
             userResp = json.loads(userres2)
             logger.info("--------------get userResp:")
             logger.info(userResp)
+
         else:
             pass
             # #超过刷新时间就要重新请求
@@ -66,26 +66,18 @@ def weixin_auth(func):
         return func(req,*args, **kwargs)
     return wrapper
 
-def get_access_token(req,redirect_url):
-    logger = logging.getLogger('django')
-    #1.获取code
-    url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid={}&redirect_uri={}&response_type=code&scope={}&state=123#wechat_redirect' \
-        .format(APPID, redirect_url, SCOPE)
-    logger.info('-------------------------url:' + url)
-    code = req.GET.get("code", '')
-    if not code:
-        return HttpResponseRedirect(url)
-    else:
-        logger.info("---------------get code:" + code)
-        # 2.通过code换取网页授权access_token
-        curl = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid={}&secret={}&code={}&grant_type=authorization_code' \
-            .format(APPID, APPSECRET, code)
-        res = requests.get(curl)
-        res2 = res.text
-        urlResp = json.loads(res2)
-        logger.info("--------------get urlResp:")
-        logger.info(urlResp)
-
-        return urlResp
-
+def get_code(func):
+    def wrapper(req, *args, **kwargs):
+        logger = logging.getLogger('django')
+        redirect_url = ROOT_URL + "/weixin_test" + req.get_full_path()
+        url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid={}&redirect_uri={}&response_type=code&scope={}&state=123#wechat_redirect' \
+            .format(APPID, redirect_url, SCOPE)
+        logger.info('-------------------------url:' + url)
+        code = req.GET.get("code", '')
+        if not code:
+            return HttpResponseRedirect(url)
+        else:
+            req.session['code'] = code
+        return func(req, *args, **kwargs)
+    return wrapper
 
